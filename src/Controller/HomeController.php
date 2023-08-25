@@ -16,7 +16,6 @@ class HomeController extends AbstractController
             return $this->redirectToRoute('app_logout');
         }
 
-        var_dump($this->getUser());
         return $this->render('home/index.html.twig', [
             'controller_name' => 'HomeController',
         ]);
