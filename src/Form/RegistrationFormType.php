@@ -4,13 +4,14 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
-use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
-use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\IsTrue;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
+use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 
 class RegistrationFormType extends AbstractType
 {
@@ -19,7 +20,20 @@ class RegistrationFormType extends AbstractType
         $builder
             ->add('email')
             ->add('username')
-            ->add('picture')
+            ->add('picture', ChoiceType::class, [
+                'choices' => [
+                    'img/avatar/avatar-1.png' => 'avatar-1',
+                    'img/avatar/avatar-2.png' => 'avatar-2',
+                    'img/avatar/avatar-3.png' => 'avatar-3',
+                    'img/avatar/avatar-4.png' => 'avatar-4',
+                    'img/avatar/avatar-5.png' => 'avatar-5',
+                    'img/avatar/avatar-6.png' => 'avatar-6',
+                    // Ajoutez plus d'options d'avatar ici
+                ],
+                'expanded' => true,
+                'multiple' => false,
+                'required' => true
+            ])
             ->add('agreeTerms', CheckboxType::class, [
                 'mapped' => false,
                 'constraints' => [
