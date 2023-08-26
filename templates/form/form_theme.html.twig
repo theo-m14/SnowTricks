@@ -1,0 +1,16 @@
+{# templates/form/form_theme.html.twig #}
+{% block choice_widget_expanded %}
+    <div {{ block('widget_container_attributes') }}>
+        {% for child in form %}
+            <label class="avatarForm">
+                <input type="radio"
+                       id="{{ child.vars.id }}"
+                       name="{{ full_name }}"
+                       value="{{ child.vars.value }}"
+                       {% if required %}required="required"{% endif %}
+                       {{ block('widget_attributes') }} />
+                <img src="{{ child.vars.label }}" alt="{{ child.vars.value }}" />
+            </label>
+        {% endfor %}
+    </div>
+{% endblock %}

@@ -2,6 +2,7 @@ monolog:
     channels:
         - deprecation # Deprecations are logged in the dedicated "deprecation" channel when it exists
 
+
 when@dev:
     monolog:
         handlers:
@@ -57,5 +58,6 @@ when@prod:
                 channels: ["!event", "!doctrine"]
             deprecation:
                 type: stream
+                level: error
                 channels: [deprecation]
                 path: php://stderr
