@@ -58,5 +58,6 @@ when@prod:
                 channels: ["!event", "!doctrine"]
             deprecation:
                 type: stream
+                level: error
                 channels: [deprecation]
                 path: php://stderr
