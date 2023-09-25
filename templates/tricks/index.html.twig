@@ -24,5 +24,6 @@
     {% for image in trick.tricksImages %}
         <img src='{{ vich_uploader_asset(image) }}'>
     {% endfor %}
+    <a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">Détails</a>
 {% endfor %}
 {% endblock %}

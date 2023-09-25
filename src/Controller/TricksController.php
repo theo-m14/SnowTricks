@@ -23,9 +23,16 @@ class TricksController extends AbstractController
 
         $tricks = $tricksRepository->findAll();
 
-        return $this->render('home/index.html.twig', ['tricks'=> $tricks]);
+        return $this->render('tricks/index.html.twig', ['tricks'=> $tricks]);
     }
 
+    #[Route('/tricks/{id}', name: 'app_tricks_readOne')]
+    public function getOne(Tricks $trick, int $id) : Response
+     {
+        return $this->render('tricks/readOne.html.twig', ['trick'=> $trick]);
+     }
+
+     
     #[Route('/ajoutTricks', name: 'app_add_tricks')]
     public function add(Request $request,EntityManagerInterface $entityManager): Response
     { 
