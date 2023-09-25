@@ -25,5 +25,9 @@
         <img src='{{ vich_uploader_asset(image) }}'>
     {% endfor %}
     <a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">Détails</a>
+    {% if app.user == trick.user %}
+    <a href="{{path('app_edit_tricks', {'id' : trick.id})}}">Modifier</a>
+    {% endif %}
+    
 {% endfor %}
 {% endblock %}

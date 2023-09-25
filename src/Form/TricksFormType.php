@@ -41,6 +41,7 @@ class TricksFormType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'entry_options' => ['label' => false],
+                'label' => false
             ])
             ->add('tricksVideos', LiveCollectionType::class, [
                 'entry_type' => TricksVideoType::class,
@@ -48,6 +49,7 @@ class TricksFormType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'entry_options' => ['label' => false],
+                'label' => false
             ])
         ;
     }

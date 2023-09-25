@@ -17,7 +17,7 @@ class TricksImage
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT,nullable:true)]
     private ?string $name = null;
 
     #[Vich\UploadableField(mapping: 'tricksImage', fileNameProperty: 'name')]
@@ -65,7 +65,7 @@ class TricksImage
         return $this->name;
     }
 
-    public function setName(string $name): static
+    public function setName(?string $name): static
     {
         $this->name = $name;
 
