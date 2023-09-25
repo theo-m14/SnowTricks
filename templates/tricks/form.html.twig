@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'un tricks{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+    <h1>Ajout Tricks</h1>
+
+    {{ form_errors(form) }}
+
+{{ component('TricksForm', {
+    form : form,
+    tricks: tricks
+}) }}
+
+{% endblock %}

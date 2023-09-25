@@ -30,10 +30,10 @@ class Tricks
     #[ORM\JoinColumn(nullable: false)]
     private ?TricksGroup $tricksGroup = null;
 
-    #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: TricksVideo::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'tricks', targetEntity: TricksVideo::class, orphanRemoval: true, cascade:["persist"])]
     private Collection $tricksVideos;
 
-    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: TricksImage::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'trick', targetEntity: TricksImage::class, orphanRemoval: true, cascade:["persist"])]
     private Collection $tricksImages;
 
     public function __construct()

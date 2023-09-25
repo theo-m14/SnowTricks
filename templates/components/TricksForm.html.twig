@@ -1,0 +1,34 @@
+<div
+    {{ attributes }}
+>
+    {{ form_start(form) }}
+
+        {{ form_row(form.name) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.tricksGroup) }}
+
+        <p>Vos Vidéos</p>
+        {% for key, itemForm in form.tricksVideos %}
+                            {{ form_row(itemForm.link, {
+                                label: false,
+                                attr: {
+                                    placeholder: 'Lien de la video'
+                                }
+                            }) }}
+                            {{ form_row(itemForm.vars.button_delete, { label: 'X', attr: { class: 'btn btn-outline-danger' } }) }}
+        {% endfor %}
+        {{ form_widget(form.tricksVideos.vars.button_add, { label: '+ Add Video', attr: { class: 'btn btn-outline-primary' } }) }}
+
+        <p>Vos Images</p>
+        {% for key, itemForm in form.tricksImages %}
+                            {{ form_row(itemForm.file, {
+                                label: false
+                            }) }}
+                            {{ form_row(itemForm.vars.button_delete, { label: 'X', attr: { class: 'btn btn-outline-danger' } }) }}
+        {% endfor %}
+        {{ form_widget(form.tricksImages.vars.button_add, { label: '+ Add Image', attr: { class: 'btn btn-outline-primary' } }) }}
+
+        <button type="submit" class="btn btn-success" formnovalidate>Save</button>
+        
+    {{ form_end(form) }}
+</div>

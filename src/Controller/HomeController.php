@@ -12,8 +12,7 @@ class HomeController extends AbstractController
     public function index(): Response
     {
         if($this->getUser() && !$this->getUser()->isVerified()){
-            $this->addFlash('error',"Veuillez vérifiez votre adresse mail");
-            return $this->redirectToRoute('app_logout');
+            $this->addFlash('unverified',"Veuillez vérifiez votre adresse mail");
         }
 
         return $this->render('home/index.html.twig', [
