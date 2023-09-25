@@ -14,6 +14,18 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 class TricksController extends AbstractController
 {
+    #[Route('/', name: 'app_home')]
+    public function index(TricksRepository $tricksRepository): Response
+    {
+        if($this->getUser() && !$this->getUser()->isVerified()){
+            $this->addFlash('unverified',"Veuillez vérifiez votre adresse mail");
+        }
+
+        $tricks = $tricksRepository->findAll();
+
+        return $this->render('home/index.html.twig', ['tricks'=> $tricks]);
+    }
+
     #[Route('/ajoutTricks', name: 'app_add_tricks')]
     public function add(Request $request,EntityManagerInterface $entityManager): Response
     { 

@@ -1,20 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello TricksController!{% endblock %}
+{% block title %}Accueil{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+{% for flash_error in app.flashes('unverified') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+{% endfor %}
+{% for flash_error in app.flashes('verify_email_error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+{% endfor %}
+{% for flash_error in app.flashes('success') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+{% endfor %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code><a href="{{ 'C:/Users/theom/Desktop/SnowTricks/src/Controller/TricksController.php'|file_link(0) }}">src/Controller/TricksController.php</a></code></li>
-        <li>Your template at <code><a href="{{ 'C:/Users/theom/Desktop/SnowTricks/templates/tricks/index.html.twig'|file_link(0) }}">templates/tricks/index.html.twig</a></code></li>
-    </ul>
-</div>
+    {% if app.user and not app.user.verified %}
+    <a href={{path('app_resend_mail')}}>Renvoyer mail</a>
+    {% endif %}
+
+{% for trick in tricks %}
+    <p>{{trick.name}}</p>
+    <p>{{trick.tricksGroup.name}}
+    {% for image in trick.tricksImages %}
+        <img src='{{ vich_uploader_asset(image) }}'>
+    {% endfor %}
+{% endfor %}
 {% endblock %}
