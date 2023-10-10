@@ -35,7 +35,7 @@ class TricksFormType extends AbstractType
                 'placeholder' => 'Sélectionnez un TricksGroup',
                 'choices' => $this->getTricksGroups(),
             ])
-            ->add('tricksImages', LiveCollectionType::class, [
+            ->add('tricksImages', CollectionType::class, [
                 'entry_type' => TricksImageType::class,
                 'allow_add' => true,
                 'allow_delete' => true,
@@ -43,7 +43,7 @@ class TricksFormType extends AbstractType
                 'entry_options' => ['label' => false],
                 'label' => false
             ])
-            ->add('tricksVideos', LiveCollectionType::class, [
+            ->add('tricksVideos', CollectionType::class, [
                 'entry_type' => TricksVideoType::class,
                 'allow_add' => true,
                 'allow_delete' => true,

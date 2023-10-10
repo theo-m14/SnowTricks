@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Tricks;
 use App\Entity\TricksVideo;
 use App\Form\TricksFormType;
+use App\Repository\TricksImageRepository;
 use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
@@ -63,7 +64,7 @@ class TricksController extends AbstractController
     }
 
     #[Route('/editTricks/{id}', name: 'app_edit_tricks')]
-    public function edit(Tricks $tricks, Request $request, EntityManagerInterface $entityManager): Response
+    public function edit(Tricks $tricks, Request $request, EntityManagerInterface $entityManager,TricksImageRepository $tricksImageRepository): Response
     {
         if (!$this->getUser() || !$this->getUser()->isVerified()) {
             $this->addFlash('error', 'Vous devez posséder un compte et être vérifié pour cela');
@@ -72,6 +73,12 @@ class TricksController extends AbstractController
 
         if ($tricks->getUser() !== $this->getUser()) {
             $this->addFlash('error', 'Le tricks doit vous appartenir pour cela');
+        }  
+
+        $tricksImages = $tricksImageRepository->findBy(['trick' => $tricks->getId()]);
+
+        foreach($tricksImages as $image){
+            $tricks->addTricksImage($image);
         }
 
         $form = $this->createForm(TricksFormType::class, $tricks);
@@ -79,7 +86,8 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() and $form->isValid()) {
-
+;
+            
             $entityManager->persist($tricks);
             $entityManager->flush();
 

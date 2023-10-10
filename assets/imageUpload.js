@@ -1,35 +1,68 @@
-addListenerOnAddBtn();
-listenerOnUpload();
-listenerOnDelete();
-
-function addListenerOnAddBtn() {
-  document.querySelector(".addImage").addEventListener("click", () => {
-    setTimeout(() => {
-      listenerOnUpload();
-      listenerOnDelete();
-      addListenerOnAddBtn();
-    }, 1000);
-  });
-}
-
 function listenerOnUpload() {
-  document.querySelectorAll(".uploadBtn").forEach((uploadBtn) => {
+  document.querySelectorAll('input[type="file"]').forEach((uploadBtn) => {
     uploadBtn.addEventListener("change", (e) => {
-      let imageId = e.target.getAttribute("imageId");
-      console.log(imageId);
-      let image = document.querySelector(".tricksImage" + imageId);
-      console.log("test=" + imageId);
+      let image = e.target.parentElement.parentElement.parentElement.parentElement.querySelector(".tricksImage");
       image.src = URL.createObjectURL(e.target.files[0]);
     });
   });
 }
 
-function listenerOnDelete(){
-    document.querySelectorAll('button.deleteBtn').forEach((deleteBtn) => {
-        deleteBtn.addEventListener("click", (e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            e.target.parentElement.remove()
-        })
-    })
+document.querySelectorAll("ul.tricksVideos li").forEach((tricksVideos) => {
+  addTagFormDeleteLink(tricksVideos);
+});
+
+document.querySelectorAll("ul.tricksImages li").forEach((tricksImages) => {
+  addTagFormDeleteLink(tricksImages);
+});
+
+document.querySelectorAll(".addTricksVideo").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    addFormToCollection(e);
+  });
+});
+
+document.querySelectorAll(".addTricksImage").forEach((btn) => {
+  btn.addEventListener("click", (e) => {
+    addFormToCollection(e);
+    setTimeout(() => {
+      listenerOnUpload();
+    }, 1000);
+  });
+});
+
+function addFormToCollection(e) {
+  let collectionName = e.target.dataset.collectionHolderClass;
+  const collectionHolder = document.querySelector("." + collectionName);
+
+  const item = document.createElement("li");
+
+  item.innerHTML = collectionHolder.dataset.prototype.replace(
+    /__name__/g,
+    collectionHolder.dataset.index
+  );
+
+  if (collectionName == "tricksImages") {
+    const image = document.createElement("img");
+    image.classList.add("tricksImage");
+
+    item.appendChild(image);
+  }
+
+  collectionHolder.appendChild(item);
+
+  collectionHolder.dataset.index++;
+  addTagFormDeleteLink(item);
+}
+
+function addTagFormDeleteLink(item) {
+  const removeFormButton = document.createElement("button");
+  removeFormButton.innerText = "Supprimer";
+
+  item.append(removeFormButton);
+
+  removeFormButton.addEventListener("click", (e) => {
+    e.preventDefault();
+    // remove the li for the tag form
+    item.remove();
+  });
 }
