@@ -2,6 +2,10 @@
 
 {% block title %}Ajout d'un tricks{% endblock %}
 
+{% block javascript %}
+{{ encore_entry_script_tags('imageUpload') }}
+{% endblock %}
+
 {% block body %}
     {% for flash_error in app.flashes('error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>

@@ -16,7 +16,7 @@ class TricksImageType extends AbstractType
         $builder
             ->add('file', VichImageType::class, [
                 'required' => false,
-                 'allow_delete' => false,
+                 'allow_delete' => false,            
                  'download_uri' => false,
                  'empty_data' => ''
             ])
