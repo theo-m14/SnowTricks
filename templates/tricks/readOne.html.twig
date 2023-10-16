@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}trick.name{% endblock %}
+
+{% block body %}
+    {% for flash_error in app.flashes('error') %}
+        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+    {% endfor %}
+
+ <h1>{{trick.name}}</h1>
+    <h3>{{trick.tricksGroup.name}}
+    <p>{{trick.description}}</p>
+    {% for image in trick.tricksImages %}
+        <img src='{{ vich_uploader_asset(image) }}'>
+    {% endfor %}   
+
+{% endblock %}

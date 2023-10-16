@@ -61,11 +61,27 @@ class RegistrationController extends AbstractController
             //     $authenticator,
             //     $request
             // );
+
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);
+    }
+
+    #[Route('/vérification', name: "app_resend_mail")]
+    public function resendMail() : Response
+    {
+        $this->emailVerifier->sendEmailConfirmation('app_verify_email', $this->getUser(),
+                (new TemplatedEmail())
+                    ->from(new Address('snowtricks@profit-arbitrage.com', 'SnowTricks Bot'))
+                    ->to($this->getUser()->getEmail())
+                    ->subject('Please Confirm your Email')
+                    ->htmlTemplate('registration/confirmation_email.html.twig')
+            );
+
+        return $this->redirectToRoute('app_home');
     }
 
     #[Route('/verify/email', name: 'app_verify_email')]
@@ -78,7 +94,6 @@ class RegistrationController extends AbstractController
             $this->emailVerifier->handleEmailConfirmation($request, $this->getUser());
         } catch (VerifyEmailExceptionInterface $exception) {
             $this->addFlash('verify_email_error', $translator->trans($exception->getReason(), [], 'VerifyEmailBundle'));
-
             return $this->redirectToRoute('app_register');
         }
 

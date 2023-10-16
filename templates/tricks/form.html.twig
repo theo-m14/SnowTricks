@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ajout d'un tricks
+{% endblock %}
+
+{% block javascript %}
+	{{ encore_entry_script_tags('imageUpload') }}
+{% endblock %}
+
+{% block body %}
+	{% for flash_error in app.flashes('error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+
+	<h1>Ajout Tricks</h1>
+
+	{{ form_start(form) }}
+
+	{{ form_row(form.name) }}
+	{{ form_row(form.description) }}
+	{{ form_row(form.tricksGroup) }}
+
+	<p>Vos Vidéos</p>
+	<ul class="tricksVideos" data-index="{{ form.tricksVideos|length > 0 ? form.tricksVideos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.tricksVideos.vars.prototype)|e('html_attr') }}">
+		{% for video in form.tricksVideos %}
+			<li>
+				{{form_row(video.link, {label: "Url de la vidéo:"})}}
+			</li>
+		{% endfor %}
+		
+	</ul>
+	<button type="button" class="addTricksVideo" data-collection-holder-class="tricksVideos">Ajouter une vidéo</button>
+
+	<p>Vos Images</p>
+	<ul class="tricksImages" data-index="{{ form.tricksImages|length > 0 ? form.tricksImages|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.tricksImages.vars.prototype)|e('html_attr') }}">
+		{% for image in form.tricksImages %}
+			<li>{{ form_row(image.file, {
+                                label: false, attr: { class: 'uploadBtn' }
+                            }) }}</li>
+			
+		{% endfor %}
+	</ul>
+	<button type="button" class="addTricksImage" data-collection-holder-class="tricksImages">Ajouter une image</button>
+
+	<button type="submit">
+		Enregistrer</button>
+
+	{{ form_end(form) }}
+
+
+{% endblock %}
