@@ -17,6 +17,9 @@
     {% if app.user and not app.user.verified %}
     <a href={{path('app_resend_mail')}}>Renvoyer mail</a>
     {% endif %}
+    {% if app.user %}
+        <a href={{path('app_add_tricks')}}>Ajouter un tricks</a>
+    {% endif %}
 
 {% for trick in tricks %}
     <p>{{trick.name}}</p>
@@ -27,6 +30,10 @@
     <a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">Détails</a>
     {% if app.user == trick.user %}
     <a href="{{path('app_edit_tricks', {'id' : trick.id})}}">Modifier</a>
+    <form class='deleteBtn' action="{{path('app_tricks_delete', {'id' : trick.id})}}" method='post' onsubmit='return (confirm("Voulez vous vraiment supprimer le serveur {{trick.name}} ?"))'>
+				<input type="hidden" name="token" value="{{ csrf_token('delete-tricks') }}">
+				<button type="submit">Supprimer</button>
+	</form>
     {% endif %}
     
 {% endfor %}

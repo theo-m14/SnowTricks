@@ -30,6 +30,11 @@ class TricksController extends AbstractController
     #[Route('/tricks/{id}', name: 'app_tricks_readOne')]
     public function getOne(Tricks $trick, int $id): Response
     {
+        if(!$trick)
+        {
+            $this->addFlash('error',"Ce tricks n'existe pas");
+            return $this->redirectToRoute('app_home');
+        }
         return $this->render('tricks/readOne.html.twig', ['trick' => $trick]);
     }
 
@@ -38,7 +43,7 @@ class TricksController extends AbstractController
     {
         if (!$this->getUser() || !$this->getUser()->isVerified()) {
             $this->addFlash('error', 'Vous devez posséder un compte et être vérifié pour cela');
-            //return $this->redirectToRoute('app_login');
+            return $this->redirectToRoute('app_home');
         }
 
         $tricks = new Tricks();
@@ -92,12 +97,33 @@ class TricksController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Tricks ajouté!');
-            //return $this->redirectToRoute('app_home');
+            return $this->redirectToRoute('app_home');
         }
 
         return $this->render('tricks/form.html.twig', [
             'form' => $form->createView(),
             'tricks' => $tricks
         ]);
+    }
+
+    #[Route('/deleteTricks/{id}', name : "app_tricks_delete")]
+    public function delete(Tricks $tricks,Request $request,EntityManagerInterface $entityManager)
+    {
+        if ($tricks->getUser() !== $this->getUser()) {
+            $this->addFlash('error', 'Vous devez être propriétaire du tricks pour le supprimer');
+            return $this->redirectToRoute('app_home');
+        }
+
+        $submittedToken = $request->request->get('token');
+
+        if ($this->isCsrfTokenValid('delete-tricks', $submittedToken)) {
+            $entityManager->remove($tricks);
+            $entityManager->flush();
+            $this->addFlash('success','Tricks supprimé');
+            return $this->redirectToRoute('app_home');
+        }
+
+        $this->addFlash('error', 'Vous devez être propriétaire du serveur pour le supprimer');
+        return $this->redirectToRoute('app_home');
     }
 }

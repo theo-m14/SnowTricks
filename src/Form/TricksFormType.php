@@ -10,8 +10,11 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Validator\Constraints\Length;
+use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
@@ -27,8 +30,24 @@ class TricksFormType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('name')
-            ->add('description')
+            ->add('name',TextType::class,['constraints' => [
+                new NotBlank([
+                    'message' => "Merci de renseigner un nom pour le tricks",
+                ]),
+                new Length([
+                    'min' => 4,
+                    'minMessage' => 'Le nom du tricks doit faire au moins {{ limit }} caractères',
+                ]),
+            ],])
+            ->add('description',TextType::class,['constraints' => [
+                new NotBlank([
+                    'message' => "Merci de renseigner une description pour le tricks",
+                ]),
+                new Length([
+                    'min' => 20,
+                    'minMessage' => 'La description du tricks doit faire au moins {{ limit }} caractères',
+                ]),
+            ],])
             ->add('tricksGroup', EntityType::class, [
                 'class' => TricksGroup::class,
                 'choice_label' => 'name',

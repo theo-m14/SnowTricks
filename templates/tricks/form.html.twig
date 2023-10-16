@@ -14,8 +14,6 @@
 
 	<h1>Ajout Tricks</h1>
 
-	{{ form_errors(form) }}
-
 	{{ form_start(form) }}
 
 	{{ form_row(form.name) }}
@@ -29,6 +27,7 @@
 				{{form_row(video.link, {label: "Url de la vidéo:"})}}
 			</li>
 		{% endfor %}
+		
 	</ul>
 	<button type="button" class="addTricksVideo" data-collection-holder-class="tricksVideos">Ajouter une vidéo</button>
 
@@ -42,11 +41,6 @@
 		{% endfor %}
 	</ul>
 	<button type="button" class="addTricksImage" data-collection-holder-class="tricksImages">Ajouter une image</button>
-	{# {{ form_widget(form.tricksImages.vars.button_add, { label: '+ Add Image', attr: { class: 'btn btn-outline-primary addImage' } }) }} #}
-
-	{# {% if tricksImages.vars.data.imageFilename|default %}
-				<img src="{{ asset(tricksImages.vars.data.imagePath) }}" height="100">
-			{% endif %} #}
 
 	<button type="submit">
 		Enregistrer</button>
