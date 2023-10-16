@@ -53,7 +53,7 @@ class TricksController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() and $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
             $tricks->setUser($this->getUser());
             $entityManager->persist($tricks);
             $entityManager->flush();
@@ -90,7 +90,7 @@ class TricksController extends AbstractController
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() and $form->isValid()) {
+        if ($form->isSubmitted() && $form->isValid()) {
 ;
             
             $entityManager->persist($tricks);
@@ -107,7 +107,7 @@ class TricksController extends AbstractController
     }
 
     #[Route('/deleteTricks/{id}', name : "app_tricks_delete")]
-    public function delete(Tricks $tricks,Request $request,EntityManagerInterface $entityManager)
+    public function delete(Tricks $tricks,Request $request,EntityManagerInterface $entityManager) : Response
     {
         if ($tricks->getUser() !== $this->getUser()) {
             $this->addFlash('error', 'Vous devez être propriétaire du tricks pour le supprimer');

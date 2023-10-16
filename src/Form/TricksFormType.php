@@ -73,7 +73,7 @@ class TricksFormType extends AbstractType
         ;
     }
 
-    private function getTricksGroups()
+    private function getTricksGroups() : array
     {
         $tricksGroups = $this->entityManager->getRepository(TricksGroup::class)->findAll();
 
