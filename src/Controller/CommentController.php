@@ -70,7 +70,9 @@ class CommentController extends AbstractController
     {
         $tricks = $comment->getTrick();
 
-        if ($this->isCsrfTokenValid('delete'.$comment->getId(), $request->request->get('_token'))) {
+        $csrfToken = $request->request->get('_token');
+
+        if ($this->isCsrfTokenValid('deleteComment', $csrfToken)) {
             $entityManager->remove($comment);
             $entityManager->flush();
         }
