@@ -1,6 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}trick.name{% endblock %}
+{% block javascript %}
+{{ encore_entry_script_tags('ajaxComment') }}
+{% endblock %}
 
 {% block body %}
     {% for flash_error in app.flashes('error') %}
@@ -12,6 +15,22 @@
     <p>{{trick.description}}</p>
     {% for image in trick.tricksImages %}
         <img src='{{ vich_uploader_asset(image) }}'>
-    {% endfor %}   
+    {% endfor %}
 
+    <p>Commentaire:</p>
+    {% for comment in trick.comments %}
+       <div class="comment"  comment-id="{{comment.id}}">
+         <p class="commentContent">{{comment.content}}</p>
+         <p class="commentError"></p>
+        <p>Posté par : {{comment.user.username}}</p>
+        <img src='../img/avatar/{{ comment.user.picture }}.png'>
+        <p>Posté le {{comment.date|date('d/m/Y')}}</p>
+        {% if app.user == comment.user %}
+            <a class="editBtn" href="#">Editer</a>
+            {% include "comment/_delete_form.html.twig" %}
+       </div>
+        {% endif %}
+    {% endfor %}
+    <p>Poster votre commentaire :</p>
+     {{ include('comment/_form.html.twig', {'button_label': 'Poster'}) }}
 {% endblock %}

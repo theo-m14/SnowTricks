@@ -3,11 +3,14 @@
 namespace App\Controller;
 
 use App\Entity\Tricks;
+use App\Entity\Comment;
+use App\Form\CommentType;
 use App\Entity\TricksVideo;
 use App\Form\TricksFormType;
-use App\Repository\TricksImageRepository;
 use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\TricksImageRepository;
+use DateTimeImmutable;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -28,14 +31,30 @@ class TricksController extends AbstractController
     }
 
     #[Route('/tricks/{id}', name: 'app_tricks_readOne')]
-    public function getOne(Tricks $trick, int $id): Response
+    public function getOne(Tricks $trick, int $id,Request $request,EntityManagerInterface $entityManager): Response
     {
+        $comment = new Comment();
+        $form = $this->createForm(CommentType::class, $comment);
+        $form->handleRequest($request);
+        
         if(!$trick)
         {
             $this->addFlash('error',"Ce tricks n'existe pas");
             return $this->redirectToRoute('app_home');
         }
-        return $this->render('tricks/readOne.html.twig', ['trick' => $trick]);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $comment->setUser($this->getUser());
+            $comment->setTrick($trick);
+            $comment->setDate(new DateTimeImmutable());
+            $entityManager->persist($comment);
+            $entityManager->flush();
+
+            $this->addFlash('success','Commentaire ajouté');
+            return $this->redirectToRoute('app_tricks_readOne',['id' => $trick->getId()]);
+        }
+
+        return $this->render('tricks/readOne.html.twig', ['trick' => $trick,'form'=> $form]);
     }
 
     #[Route('/ajoutTricks', name: 'app_add_tricks')]
