@@ -9,7 +9,7 @@
 		{% block css %}
 			{{ encore_entry_link_tags('app') }}
 		{% endblock %}
-		<link rel="icon" type="image/png" href="favicon.png"> {% block stylesheets %}{% endblock %}{% block javascripts %}{% endblock %}
+		<link rel="icon" type="image/png" href="{{asset('favicon.png')}}"> {% block stylesheets %}{% endblock %}{% block javascripts %}{% endblock %}
 		{{ encore_entry_link_tags('app') }}
 		{{ encore_entry_script_tags('app') }}
 		<script src="https://kit.fontawesome.com/f64612fcfe.js" crossorigin="anonymous"></script>
