@@ -16,7 +16,9 @@ class CommentType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('content',TextType::class,['constraints' => [
+            ->add('content',TextType::class,[
+                'label'=> false,
+                'constraints' => [
                 new NotBlank([
                     'message' => "Merci de renseigner un contenu pour le commentaire",
                 ]),

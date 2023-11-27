@@ -6,29 +6,25 @@
 			{% block title %}Welcome!
 			{% endblock %}
 		</title>
-        {% block css %}
-            {{ encore_entry_link_tags('app') }}
-        {% endblock %}
+		{% block css %}
+			{{ encore_entry_link_tags('app') }}
+		{% endblock %}
 		<link rel="icon" type="image/png" href="favicon.png"> {% block stylesheets %}{% endblock %}{% block javascripts %}{% endblock %}
-            {{ encore_entry_link_tags('app') }}
-            {{ encore_entry_script_tags('app') }}
-			{% block javascript %}
-			{% endblock %}
-		</head>
-		<body>
+		{{ encore_entry_link_tags('app') }}
+		{{ encore_entry_script_tags('app') }}
+		<script src="https://kit.fontawesome.com/f64612fcfe.js" crossorigin="anonymous"></script>
+		{% block javascript %}{% endblock %}
+	</head>
+	<body>
+		<main>
+			{% include "nav.html.twig" %}
 			{% for message in app.flashes('success') %}
 				<div class="alert alert-success">
 					{{ message }}
 				</div>
 			{% endfor %}
-            {% if app.user %}
-        <div class="mb-3">
-            You are logged in as {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
-        </div>
-        {% else %}
-            <a href="{{path('app_login')}}">Connexion</a>
-            <a href="{{path('app_register')}}">Inscription</a>
-        {% endif %}
 			{% block body %}{% endblock %}
-		</body>
-	</html>
+		</main>
+		{% include "footer.html.twig" %}
+	</body>
+</html>

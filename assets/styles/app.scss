@@ -1,24 +1,6 @@
-body {
-    background-color: lightgray;
-}
-
-
-div#registration_form_picture {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 50%;
-    padding: 2em;
-}
-.avatarForm{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    img{
-        width: 75px;
-    }
-}
-
-img{
-    width: 75px;
-}
+@import 'color';
+@import 'general';
+@import 'home';
+@import 'security-form';
+@import 'singleTrick';
+@import 'trickForm';

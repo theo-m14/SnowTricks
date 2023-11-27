@@ -7,12 +7,14 @@ editCommentBtn.forEach((btn) => {
 
 function editComment(e)
 {
-    let commentContainer = e.target.parentElement
+    let commentContainer = e.target.parentElement.parentElement.parentElement
     let commentContent = commentContainer.querySelector('.commentContent')
     let textarea = document.createElement('textarea');
     textarea.classList.add('commentContent');
     textarea.value = commentContent.textContent;
     commentContainer.replaceChild(textarea, commentContent);
+    let commentAction =  e.target.parentElement.parentElement;
+    commentAction.classList.add('displayNone')
 
     let submitBtn = document.createElement('button');
     submitBtn.textContent = 'Valider';
@@ -20,18 +22,22 @@ function editComment(e)
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault();
 
-        let commentContainer = e.target.parentElement
+        let commentContainer = e.target.parentElement.parentElement
         let commentContent = commentContainer.querySelector('.commentContent')
 
-
+        console.log(commentContainer)
+        console.log(commentContent)
         let formData = new FormData();
         formData.append('content', commentContent.value);
         formData.append('comment-id', commentContainer.getAttribute('comment-id'));
+
 
         const data = new URLSearchParams();
         for (const pair of formData) {
             data.append(pair[0], pair[1]);
         }
+
+        
 
         fetch('/comment/editComment', {
             method: 'PUT',
@@ -48,15 +54,13 @@ function editComment(e)
             if(data.error){
                 throw new Error(data.error);
             }
-            console.log('edited')
             let editedComment = document.createElement('p')
             editedComment.textContent = commentContent.value;
             editedComment.classList.add('commentContent');
-            console.log(editedComment);
-            console.log(textarea);
             textarea.replaceWith(editedComment);
             submitBtn.remove()
             commentContainer.querySelector('.commentError').textContent = ''
+            commentAction.classList.remove('displayNone')
         })
         .catch(error => {
             commentContainer.querySelector('.commentError').textContent = error.message

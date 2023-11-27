@@ -1,0 +1,60 @@
+form.security{
+    display: flex;
+    flex-direction: column;
+    border: 2px solid $accent;
+    width: 25%;
+    margin: 5% auto;
+    padding: 2em 1em;
+    text-align: center;
+    align-items: center;
+    gap: 1em;
+    input{
+        background-color: white;
+        border: none;
+        padding: 0.5em;
+        border-bottom: 1px solid $accent;
+        width: 70%;
+        margin: auto;
+    }
+    button{
+        width: 150px;
+        margin: auto;
+        background-color: $primary;
+        border-radius: 5px;
+        border: none;
+        padding: 0.5em;
+        &:hover{
+            cursor: pointer;
+            transform: translate(0, -2px);
+        }
+        font-weight: bold;
+        box-shadow: 3px 3px 8px $primary;
+        transition: 0.4s;
+    }
+    div#registration_form_picture {
+
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+        padding: 2em;
+        label{
+            margin-top: 15px;
+            width: 30%;
+        }
+    }
+    .avatarForm{
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        img{
+            width: 75px;
+        }
+    }
+}
+
+@media screen and (max-width:1366px) {
+    form.security{
+        width: 70vw;
+    }
+}    

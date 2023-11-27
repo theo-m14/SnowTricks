@@ -56,7 +56,10 @@ function addFormToCollection(e) {
 
 function addTagFormDeleteLink(item) {
   const removeFormButton = document.createElement("button");
-  removeFormButton.innerText = "Supprimer";
+  let removeIcon = document.createElement('i');
+  removeIcon.classList.add('fa-solid');
+  removeIcon.classList.add('fa-trash');
+  removeFormButton.append(removeIcon);
 
   item.append(removeFormButton);
 
@@ -66,3 +69,20 @@ function addTagFormDeleteLink(item) {
     item.remove();
   });
 }
+
+let mobileMediaBtn = document.querySelector('.mobile-media')
+
+mobileMediaBtn.addEventListener('click',() =>{
+  mobileMediaBtn.classList.toggle('active')
+  console.log('click')
+  document.querySelector('.media-container').classList.toggle('displayNone')
+  if(mobileMediaBtn.classList.contains('active')){
+    mobileMediaBtn.textContent = "Cacher les médias"
+  }else{
+    mobileMediaBtn.textContent = "Voir les médias"
+  }
+})
+
+  if (window.innerWidth < 1024) {
+    document.querySelector('.media-container').classList.add('displayNone');
+  }

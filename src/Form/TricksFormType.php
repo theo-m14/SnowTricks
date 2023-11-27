@@ -16,6 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\UX\LiveComponent\Form\Type\LiveCollectionType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 
 class TricksFormType extends AbstractType
@@ -39,7 +40,7 @@ class TricksFormType extends AbstractType
                     'minMessage' => 'Le nom du tricks doit faire au moins {{ limit }} caractères',
                 ]),
             ],])
-            ->add('description',TextType::class,['constraints' => [
+            ->add('description',TextareaType::class,['constraints' => [
                 new NotBlank([
                     'message' => "Merci de renseigner une description pour le tricks",
                 ]),

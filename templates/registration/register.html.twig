@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Register{% endblock %}
+{% block title %}Enregistrement{% endblock %}
 
 {% form_theme registrationForm './form/form_theme.html.twig' %}
 
@@ -9,19 +9,21 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <h1>Enregistrement</h1>
 
     {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.username) }}
-        {{ form_row(registrationForm.picture) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+    {{ form_start(registrationForm, {'attr': {'class': 'security'}}) }}
+        
+        {{ form_label(registrationForm.email) }}
+        {{ form_widget(registrationForm.email) }}
+        {{ form_label(registrationForm.username) }}
+        {{ form_widget(registrationForm.username) }}
+        {{ form_label(registrationForm.picture,'Avatar') }}
+        {{ form_widget(registrationForm.picture) }}
+        {{ form_label(registrationForm.plainPassword,'Mot de passe') }}
+        {{ form_widget(registrationForm.plainPassword) }}
 
-        <button type="submit" class="btn">Register</button>
+        <button type="submit" class="btn">Enregistrement</button>
     {{ form_end(registrationForm) }}
 {% endblock %}

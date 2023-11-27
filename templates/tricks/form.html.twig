@@ -1,4 +1,4 @@
-{% extends 'base.html.twig' %}
+{# {% extends 'base.html.twig' %}
 
 {% block title %}Ajout d'un tricks
 {% endblock %}
@@ -48,4 +48,62 @@
 	{{ form_end(form) }}
 
 
+{% endblock %} #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}{% if form.name %}{{ form.name.vars.data }}{% else %}Création Tricks{% endif %}{% endblock %}
+{% block javascript %}
+	{{ encore_entry_script_tags('imageUpload') }}
+{% endblock %}
+
+{% block body %}
+	{% for flash_error in app.flashes('error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+
+	<div class="home-background background-single-trick">
+			{{ form_start(form, {'attr': {'class': 'single-trick trick-form'}}) }}
+			<div class='trick-action'>
+				<i class="fa-solid fa-pencil"></i>
+				<i class="fa-solid fa-trash"></i>
+			</div>
+			<img src={{asset('img/tricksImage/test2-6548ac3ebfb78018877237.png')}}>
+			{{ form_widget(form.name) }}
+			<a class="mobile-media btn">Voir Médias</a>
+			<div class="media-container ">
+				<ul class="tricksVideos" data-index="{{ form.tricksVideos|length > 0 ? form.tricksVideos|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.tricksVideos.vars.prototype)|e('html_attr') }}">
+					{% for video in form.tricksVideos %}
+						<li>
+							{{form_widget(video.link, {label: "Url de la vidéo:"})}}
+						</li>
+					{% endfor %}
+				</ul>
+				<button type="button" class="addTricksVideo" data-collection-holder-class="tricksVideos"><i class="fa-solid fa-plus"></i><i class="fa-brands fa-youtube"></i></button>
+				<ul class="tricksImages" data-index="{{ form.tricksImages|length > 0 ? form.tricksImages|last.vars.name + 1 : 0 }}" data-prototype="{{ form_widget(form.tricksImages.vars.prototype)|e('html_attr') }}">
+					{% for image in form.tricksImages %}
+						<li>
+						{{ form_row(image.file, {
+                                label: false, attr: { class: 'uploadBtn' }
+                            }) }}</li>
+					{% endfor %}
+				</ul>
+				<button type="button" class="addTricksImage" data-collection-holder-class="tricksImages"><i class="fa-solid fa-plus"></i><i class="fa-solid fa-image"></i></button>
+			</div>
+			{{ form_widget(form.description) }}
+			<div class="trick-details">
+				{{ form_widget(form.tricksGroup) }}
+			</div>
+			<div class='trick-form-action'>
+				<button class="deleteBtn">Supprimer</button>
+				<button type="submit">Enregistrer</button>	
+			</div>
+			{{ form_end(form) }}
+			<form class='deleteForm' action="" method='post' onsubmit='return (confirm("Voulez vous vraiment supprimer le trick?"))'>
+					<input type="hidden" name="token" value="{{ csrf_token('delete-tricks') }}">
+					<button type="submit">
+						<i class="fa-solid fa-trash"></i>
+					</button>
+			</form>
+	</div>
 {% endblock %}
