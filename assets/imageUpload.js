@@ -31,11 +31,18 @@ document.querySelectorAll(".addTricksImage").forEach((btn) => {
 });
 
 function addFormToCollection(e) {
-  let collectionName = e.target.dataset.collectionHolderClass;
+  console.log(e.target)
+  let target = e.target
+  if (e.target.tagName.toLowerCase() === 'i') {
+    target = target.parentElement
+  }
+  let collectionName = target.dataset.collectionHolderClass;
   const collectionHolder = document.querySelector("." + collectionName);
 
   const item = document.createElement("li");
 
+  console.log(collectionHolder)
+  console.log(collectionName)
   item.innerHTML = collectionHolder.dataset.prototype.replace(
     /__name__/g,
     collectionHolder.dataset.index
