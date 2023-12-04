@@ -1,40 +1,50 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}Accueil
+{% endblock %}
 
 {% block body %}
 
-{% for flash_error in app.flashes('unverified') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-{% endfor %}
-{% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-{% endfor %}
-{% for flash_error in app.flashes('success') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-{% endfor %}
+	{% for flash_error in app.flashes('unverified') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+	{% for flash_error in app.flashes('verify_email_error') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
+	{% for flash_error in app.flashes('success') %}
+		<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+	{% endfor %}
 
-    {% if app.user and not app.user.verified %}
-    <a href={{path('app_resend_mail')}}>Renvoyer mail</a>
-    {% endif %}
-    {% if app.user %}
-        <a href={{path('app_add_tricks')}}>Ajouter un tricks</a>
-    {% endif %}
+	<div class="home-background">
+		<h2>Le site pour partager votre passion et vos connaissances sur le sport de la glisse</h2>
+		<a href="#tricks"><i class="fa-solid fa-circle-arrow-down"></i></a>
+	</div>
+	{% if app.user and not app.user.verified %}
+		<a href={{path('app_resend_mail')}}>Renvoyer mail</a>
+	{% endif %}
+	{% if app.user %}
+		<a href={{path('app_add_tricks')}} class="addTrick">Ajouter un tricks</a>
+	{% endif %}
 
-{% for trick in tricks %}
-    <p>{{trick.name}}</p>
-    <p>{{trick.tricksGroup.name}}
-    {% for image in trick.tricksImages %}
-        <img src='{{ vich_uploader_asset(image) }}'>
-    {% endfor %}
-    <a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">Détails</a>
-    {% if app.user == trick.user %}
-    <a href="{{path('app_edit_tricks', {'id' : trick.id})}}">Modifier</a>
-    <form class='deleteBtn' action="{{path('app_tricks_delete', {'id' : trick.id})}}" method='post' onsubmit='return (confirm("Voulez vous vraiment supprimer le serveur {{trick.name}} ?"))'>
-				<input type="hidden" name="token" value="{{ csrf_token('delete-tricks') }}">
-				<button type="submit">Supprimer</button>
-	</form>
-    {% endif %}
-    
-{% endfor %}
-{% endblock %}
+	<div class="tricks-container" id="tricks">
+		{% for trick in tricks %}
+			<div class="trick">
+				<img src="{{ vich_uploader_asset(trick.tricksImages[0]) }}" alt="">
+				<div>
+					<a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">{{trick.name}}</a>
+					{% if app.user == trick.user %}
+						<a href="{{path('app_edit_tricks', {'id' : trick.id})}}">
+							<i class="fa-solid fa-pencil"></i>
+						</a>
+						<form class='deleteBtn' action="{{path('app_tricks_delete', {'id' : trick.id})}}" method='post' onsubmit='return (confirm("Voulez vous vraiment supprimer le serveur {{trick.name}} ?"))'>
+							<input type="hidden" name="token" value="{{ csrf_token('delete-tricks') }}">
+							<button type="submit">
+								<i class="fa-solid fa-trash"></i>
+							</button>
+						</form>
+					{% endif %}
+				</div>
+			</div>
+		{% endfor %}
+		</div>
+	{% endblock %}

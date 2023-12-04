@@ -1,0 +1,104 @@
+.trick-form{
+    .trick-action{
+        font-size: 18px;
+    }
+    #tricks_form_name{
+        position: absolute;
+        text-align: center;
+        left: 50%;
+        top: 30%;
+        transform: translate(-50%, -70%);
+      }
+    textarea{
+        display: block;
+        width: 70%;
+        margin: auto;
+        padding: 10px;
+        margin-bottom: 2em;
+        min-height: 300px;
+        border-radius: 5px;
+    }
+    .trick-details{
+        justify-content: flex-start;
+        width: 72%;
+        margin: auto;
+    }
+    .trick-form-action{
+        display: flex;
+        justify-content: flex-end;
+        width: 72%;
+        margin: auto;
+        margin-top: 2em;
+    }
+    padding-bottom: 2em;
+    .deleteBtn{
+        margin-right: 5px;
+        background-color: red;
+        color: white;
+        border:none;
+        border-radius: 5px;
+        &:hover{
+            cursor: pointer;
+            background-color: rgba(255, 0, 0, 0.685);
+        }
+    }
+    .media-container{
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 1em;
+        width: 95%;
+        margin: auto;
+        margin-bottom: 2em;
+        ul{
+            list-style: none;
+            display: flex;
+            align-items: center;
+            gap: 2em;
+            flex-wrap: wrap;
+            li{
+                display: flex;
+                align-items: center;
+                justify-content: space-evenly;
+                gap: 1em;
+            }
+        }
+        button{
+            padding: 10px;
+        }
+        .vich-image{
+            display: flex;
+            align-items: center;
+        }
+    }
+}
+
+form.deleteForm{
+    display: none;
+}
+
+@media screen and (max-width:720px) {
+    .trick-form{
+        #tricks_form_name{
+            font-size: 18px;
+        }
+        #tricks_form_description{
+            font-size: 18px;
+        }
+        .trick-form-action{
+            justify-content: center;
+            gap:1em;
+            button{
+                font-size: 18px;
+                padding: 5px;
+            }
+        }
+        .trick-details{
+            justify-content: center;
+            select{
+                font-size: 18px;
+                padding: 10px;
+            }
+        }
+    }
+    
+}

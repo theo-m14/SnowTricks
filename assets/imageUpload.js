@@ -31,11 +31,18 @@ document.querySelectorAll(".addTricksImage").forEach((btn) => {
 });
 
 function addFormToCollection(e) {
-  let collectionName = e.target.dataset.collectionHolderClass;
+  console.log(e.target)
+  let target = e.target
+  if (e.target.tagName.toLowerCase() === 'i') {
+    target = target.parentElement
+  }
+  let collectionName = target.dataset.collectionHolderClass;
   const collectionHolder = document.querySelector("." + collectionName);
 
   const item = document.createElement("li");
 
+  console.log(collectionHolder)
+  console.log(collectionName)
   item.innerHTML = collectionHolder.dataset.prototype.replace(
     /__name__/g,
     collectionHolder.dataset.index
@@ -56,7 +63,10 @@ function addFormToCollection(e) {
 
 function addTagFormDeleteLink(item) {
   const removeFormButton = document.createElement("button");
-  removeFormButton.innerText = "Supprimer";
+  let removeIcon = document.createElement('i');
+  removeIcon.classList.add('fa-solid');
+  removeIcon.classList.add('fa-trash');
+  removeFormButton.append(removeIcon);
 
   item.append(removeFormButton);
 
@@ -66,3 +76,20 @@ function addTagFormDeleteLink(item) {
     item.remove();
   });
 }
+
+let mobileMediaBtn = document.querySelector('.mobile-media')
+
+mobileMediaBtn.addEventListener('click',() =>{
+  mobileMediaBtn.classList.toggle('active')
+  console.log('click')
+  document.querySelector('.media-container').classList.toggle('displayNone')
+  if(mobileMediaBtn.classList.contains('active')){
+    mobileMediaBtn.textContent = "Cacher les médias"
+  }else{
+    mobileMediaBtn.textContent = "Voir les médias"
+  }
+})
+
+  if (window.innerWidth < 1024) {
+    document.querySelector('.media-container').classList.add('displayNone');
+  }
