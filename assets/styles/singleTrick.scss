@@ -200,3 +200,23 @@ div.home-background.background-single-trick{
     }
   }
 }
+
+@media screen and (max-width:580px) {
+  .trick-form{
+    .media-container{
+      flex-direction: column;
+      ul{ 
+        padding: 0;
+        flex-direction: column;
+        li{
+        flex-direction: column;
+        div{
+          display: flex;
+          flex-direction: column;
+          margin: 1em auto;
+          gap: 1em;
+        }
+      }}
+    }
+  }
+}
