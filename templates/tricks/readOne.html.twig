@@ -64,13 +64,13 @@
 						</div>
 					</div>
 				{% endfor %}
-				{% if previous >= 1 %}
-					<a href="{{ path('app_tricks_readOne', { id: trick.id, page: previous }) }}">Précédent</a>
-				{% endif %}
-				{% if (next - 1) * comment_per_page < comments|length %}
-					<a href="{{ path('app_tricks_readOne', { id: trick.id, page: next }) }}">Suivant</a>
-				{% endif %}
+				<div class="pagination">
+					{% if (next - 1) * comment_per_page < comments|length and comments|length > 0 %}
+						<a href="{{ path('app_comments_json', { id: trick.id, page: next }) }}">Plus de commentaire</a>
+					{% endif %}
+				</div>
 			</div>
 		</div>
+		{{ include("footer.html.twig", {singleTrickPage}) }}
 	</div>
 {% endblock %}

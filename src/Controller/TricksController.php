@@ -16,19 +16,26 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TricksController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
-    public function index(TricksRepository $tricksRepository): Response
+    public function index(TricksRepository $tricksRepository,Request $request): Response
     {
         if ($this->getUser() && !$this->getUser()->isVerified()) {
             $this->addFlash('unverified', "Veuillez vérifiez votre adresse mail");
         }
 
-        $tricks = $tricksRepository->findAll();
+        $page = max(1, $request->query->getInt('page', 1));
+        $paginator = $tricksRepository->getTricksPaginator($page);
 
-        return $this->render('tricks/index.html.twig', ['tricks' => $tricks]);
+        return $this->render('tricks/index.html.twig', [
+            'tricks' => $paginator,
+            'previous' => $page - 1,
+            'next' => min(count($paginator), $page + 1),
+            'tricks_per_page' => $tricksRepository::PAGINATOR_PER_PAGE
+        ]);
     }
 
     #[Route('/tricks/{id}', name: 'app_tricks_readOne')]
@@ -62,9 +69,9 @@ class TricksController extends AbstractController
             'trick' => $trick,
             'form'=> $form,
             'comments' => $paginator,
-            'previous' => $page - 1,
             'next' => min(count($paginator), $page + 1),
             'comment_per_page' => $commentRepository::PAGINATOR_PER_PAGE,
+            'singleTrickPage' => true
         ]);
     }
 
@@ -94,7 +101,8 @@ class TricksController extends AbstractController
 
         return $this->render('tricks/form.html.twig', [
             'form' => $form->createView(),
-            'tricks' => $tricks
+            'tricks' => $tricks,
+            'singleTrickPage' => true
         ]);
     }
 
@@ -121,7 +129,6 @@ class TricksController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-;
             
             $entityManager->persist($tricks);
             $entityManager->flush();
@@ -132,7 +139,8 @@ class TricksController extends AbstractController
 
         return $this->render('tricks/form.html.twig', [
             'form' => $form->createView(),
-            'tricks' => $tricks
+            'tricks' => $tricks,
+            'singleTrickPage' => true
         ]);
     }
 
@@ -155,5 +163,19 @@ class TricksController extends AbstractController
 
         $this->addFlash('error', 'Vous devez être propriétaire du serveur pour le supprimer');
         return $this->redirectToRoute('app_home');
+    }
+    
+    #[Route('/ajaxTricks', name: 'app_tricks_json')]
+    public function getTricksJson(TricksRepository $tricksRepository,Request $request) : JsonResponse
+    {   
+        $page = max(1, $request->query->getInt('page', 1));
+        $paginator = $tricksRepository->getTricksPaginator($page);
+
+        return new JsonResponse(['content' => $this->renderView('tricks/data.html.twig', [
+            'tricks' => $paginator,
+            'previous' => $page - 1,
+            'next' => min(count($paginator), $page + 1),
+            'tricks_per_page' => $tricksRepository::PAGINATOR_PER_PAGE
+        ])]);
     }
 }

@@ -3,6 +3,10 @@
 {% block title %}Accueil
 {% endblock %}
 
+{% block javascript %}
+{{ encore_entry_script_tags('ajaxTricks') }}
+{% endblock %}
+
 {% block body %}
 
 	{% for flash_error in app.flashes('unverified') %}
@@ -17,7 +21,9 @@
 
 	<div class="home-background">
 		<h2>Le site pour partager votre passion et vos connaissances sur le sport de la glisse</h2>
-		<a href="#tricks"><i class="fa-solid fa-circle-arrow-down"></i></a>
+		<a href="#tricks">
+			<i class="fa-solid fa-circle-arrow-down"></i>
+		</a>
 	</div>
 	{% if app.user and not app.user.verified %}
 		<a href={{path('app_resend_mail')}}>Renvoyer mail</a>
@@ -26,25 +32,33 @@
 		<a href={{path('app_add_tricks')}} class="addTrick">Ajouter un tricks</a>
 	{% endif %}
 
-	<div class="tricks-container" id="tricks">
-		{% for trick in tricks %}
-			<div class="trick">
-				<img src="{{ vich_uploader_asset(trick.tricksImages[0]) }}" alt="">
-				<div>
-					<a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">{{trick.name}}</a>
-					{% if app.user == trick.user %}
-						<a href="{{path('app_edit_tricks', {'id' : trick.id})}}">
-							<i class="fa-solid fa-pencil"></i>
-						</a>
-						<form class='deleteBtn' action="{{path('app_tricks_delete', {'id' : trick.id})}}" method='post' onsubmit='return (confirm("Voulez vous vraiment supprimer le serveur {{trick.name}} ?"))'>
-							<input type="hidden" name="token" value="{{ csrf_token('delete-tricks') }}">
-							<button type="submit">
-								<i class="fa-solid fa-trash"></i>
-							</button>
-						</form>
-					{% endif %}
+	<div class="home-tricks">
+		<div class="tricks-container" id="tricks">
+			{% for trick in tricks %}
+				<div class="trick">
+					<img src="{{ vich_uploader_asset(trick.tricksImages[0]) }}" alt="">
+					<div>
+						<a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">{{trick.name}}</a>
+						{% if app.user == trick.user %}
+							<a href="{{path('app_edit_tricks', {'id' : trick.id})}}">
+								<i class="fa-solid fa-pencil"></i>
+							</a>
+							<form class='deleteBtn' action="{{path('app_tricks_delete', {'id' : trick.id})}}" method='post' onsubmit='return (confirm("Voulez vous vraiment supprimer le serveur {{trick.name}} ?"))'>
+								<input type="hidden" name="token" value="{{ csrf_token('delete-tricks') }}">
+								<button type="submit">
+									<i class="fa-solid fa-trash"></i>
+								</button>
+							</form>
+						{% endif %}
+					</div>
 				</div>
-			</div>
-		{% endfor %}
+			{% endfor %}
+			<div class="pagination btn">
+			{% if (next - 1) * tricks_per_page < tricks|length and tricks|length > 0 %}
+				<a href="{{ path('app_tricks_json', { page: next }) }}">Suivant</a>
+			{% endif %}
 		</div>
-	{% endblock %}
+		</div>
+		
+	</div>
+{% endblock %}

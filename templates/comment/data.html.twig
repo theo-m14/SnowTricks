@@ -1,0 +1,22 @@
+{% for comment in comments %}
+	<div class="comment" comment-id="{{comment.id}}">
+		<img src='../img/avatar/{{ comment.user.picture }}.png'>
+		<div class="comment-details">
+			<p class="commentContent">{{comment.content}}</p>
+			<p class="commentError"></p>
+			{% if app.user == comment.user %}
+				<div class="comment-action">
+					<a class="editBtn" href="#">
+						<i class="fa-solid fa-pencil"></i>
+					</a>
+					{% include "comment/_delete_form.html.twig" %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+{% endfor %}
+<div class="pagination">
+{% if (next - 1) * comment_per_page < comments|length and comments|length > 0 %}
+	<a href="{{ path('app_comments_json', { id: trick.id, page: next }) }}">Plus de commentaire</a>
+{% endif %}
+</div>

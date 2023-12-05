@@ -2,10 +2,11 @@
 
 namespace App\Controller;
 
+use App\Entity\Tricks;
+use DateTimeImmutable;
 use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Repository\CommentRepository;
-use DateTimeImmutable;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -78,5 +79,19 @@ class CommentController extends AbstractController
         }
 
         return $this->redirectToRoute('app_tricks_readOne', ['id' => $tricks->getId()], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/ajaxComments/{id}', name: 'app_comments_json')]
+    public function getTricksJson(Tricks $trick,CommentRepository $commentRepository,Request $request) : JsonResponse
+    {   
+        $page = max(1, $request->query->getInt('page', 1));
+        $paginator = $commentRepository->getCommentPaginator($trick, $page);
+
+        return new JsonResponse(['content' => $this->renderView('comment/data.html.twig', [
+            'trick' => $trick,
+            'comments' => $paginator,
+            'next' => min(count($paginator), $page + 1),
+            'comment_per_page' => $commentRepository::PAGINATOR_PER_PAGE,
+        ])]);
     }
 }
