@@ -7,6 +7,7 @@ use App\Entity\Comment;
 use App\Form\CommentType;
 use App\Entity\TricksVideo;
 use App\Form\TricksFormType;
+use App\Repository\CommentRepository;
 use App\Repository\TricksRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\TricksImageRepository;
@@ -31,7 +32,7 @@ class TricksController extends AbstractController
     }
 
     #[Route('/tricks/{id}', name: 'app_tricks_readOne')]
-    public function getOne(Tricks $trick, int $id,Request $request,EntityManagerInterface $entityManager): Response
+    public function getOne(Tricks $trick, int $id,Request $request,EntityManagerInterface $entityManager,CommentRepository $commentRepository): Response
     {
         $comment = new Comment();
         $form = $this->createForm(CommentType::class, $comment);
@@ -54,7 +55,17 @@ class TricksController extends AbstractController
             return $this->redirectToRoute('app_tricks_readOne',['id' => $trick->getId()]);
         }
 
-        return $this->render('tricks/readOne.html.twig', ['trick' => $trick,'form'=> $form]);
+        $page = max(1, $request->query->getInt('page', 1));
+        $paginator = $commentRepository->getCommentPaginator($trick, $page);
+
+        return $this->render('tricks/readOne.html.twig', [
+            'trick' => $trick,
+            'form'=> $form,
+            'comments' => $paginator,
+            'previous' => $page - 1,
+            'next' => min(count($paginator), $page + 1),
+            'comment_per_page' => $commentRepository::PAGINATOR_PER_PAGE,
+        ]);
     }
 
     #[Route('/ajoutTricks', name: 'app_add_tricks')]
