@@ -5,15 +5,15 @@ function addEventOnLoadMore(){
         let link = document.querySelector('.pagination a')
     
         let nextPageUrl = link.getAttribute('href')
-        console.log(nextPageUrl)
+
+        let tricksContainer = document.querySelector('.tricks-container')
     
         fetch(nextPageUrl).then((response) => {
-            return response.json()
-        }).then(data => {
-            console.log(data)
-            let tricksContainer = document.querySelector('.tricks-container')
             tricksContainer.removeChild(document.querySelector('.pagination'))
+            return response.json()
+        }).then(data => {            
             tricksContainer.innerHTML += data.content
+            addEventOnLoadMore()
         })
     })
 }

@@ -2,7 +2,7 @@
 	<div class="trick">
 		<img src="{{ vich_uploader_asset(trick.tricksImages[0]) }}" alt="">
 		<div>
-			<a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">{{trick.name}}</a>
+			<a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">{{trick.name|slice(0,20)}}</a>
 			{% if app.user == trick.user %}
 				<a href="{{path('app_edit_tricks', {'id' : trick.id})}}">
 					<i class="fa-solid fa-pencil"></i>

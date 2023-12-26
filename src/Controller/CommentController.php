@@ -54,7 +54,7 @@ class CommentController extends AbstractController
         //Si le commentaire est nul ou si l'utilisateur actuel n'est pas l'auteur du commentaire
         if($comment === null || $this->getUser() != $comment->getUser())
         {
-            return new JsonResponse([], Response::HTTP_FORBIDDEN);
+            return new JsonResponse(['error' => "Vous n'êtes pas auteur du commenteur"], Response::HTTP_FORBIDDEN);
         }
 
         $comment->setContent($commentContent);

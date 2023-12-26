@@ -18,12 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
+
 class TricksController extends AbstractController
 {
     #[Route('/', name: 'app_home')]
     public function index(TricksRepository $tricksRepository,Request $request): Response
-    {
-        if ($this->getUser() && !$this->getUser()->isVerified()) {
+    {   
+        /** @var \App\Entity\User | null $user */
+        $user = $this->getUser();
+
+        if ($user && !$user->isVerified()) {
             $this->addFlash('unverified', "Veuillez vérifiez votre adresse mail");
         }
 
@@ -84,7 +88,6 @@ class TricksController extends AbstractController
         }
 
         $tricks = new Tricks();
-        $tricks->addTricksVideo(new TricksVideo());
 
         $form = $this->createForm(TricksFormType::class, $tricks);
 
@@ -92,6 +95,9 @@ class TricksController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
             $tricks->setUser($this->getUser());
+            if(!$tricks->getUpdatedAt()){
+                $tricks->setUpdatedAt(new DateTimeImmutable());
+            }
             $entityManager->persist($tricks);
             $entityManager->flush();
 
@@ -128,12 +134,12 @@ class TricksController extends AbstractController
 
         $form->handleRequest($request);
 
+
         if ($form->isSubmitted() && $form->isValid()) {
-            
             $entityManager->persist($tricks);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Tricks ajouté!');
+            $this->addFlash('success', 'Tricks modifié!');
             return $this->redirectToRoute('app_home');
         }
 

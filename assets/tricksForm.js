@@ -1,3 +1,4 @@
+//Change upload file name on btn on change
 function listenerOnUpload() {
   document.querySelectorAll('input[type="file"]').forEach((uploadBtn) => {
     uploadBtn.addEventListener("change", (e) => {
@@ -7,20 +8,27 @@ function listenerOnUpload() {
   });
 }
 
+//Add delete link on existing media
 document.querySelectorAll("ul.tricksVideos li").forEach((tricksVideos) => {
   addTagFormDeleteLink(tricksVideos);
+  createIframe(tricksVideos.querySelector('input'))
+  tricksVideos.querySelector('input').addEventListener('focusout',(e) => {
+    createIframe(e.target)
+  })
 });
 
 document.querySelectorAll("ul.tricksImages li").forEach((tricksImages) => {
   addTagFormDeleteLink(tricksImages);
 });
 
+//Add new video input
 document.querySelectorAll(".addTricksVideo").forEach((btn) => {
   btn.addEventListener("click", (e) => {
     addFormToCollection(e);
   });
 });
 
+//Add new image input
 document.querySelectorAll(".addTricksImage").forEach((btn) => {
   btn.addEventListener("click", (e) => {
     addFormToCollection(e);
@@ -30,6 +38,7 @@ document.querySelectorAll(".addTricksImage").forEach((btn) => {
   });
 });
 
+//Adding collection item on input
 function addFormToCollection(e) {
   console.log(e.target)
   let target = e.target
@@ -61,6 +70,7 @@ function addFormToCollection(e) {
   addTagFormDeleteLink(item);
 }
 
+//create delete button
 function addTagFormDeleteLink(item) {
   const removeFormButton = document.createElement("button");
   let removeIcon = document.createElement('i');
@@ -77,6 +87,7 @@ function addTagFormDeleteLink(item) {
   });
 }
 
+//Toggle media container display on mobile
 let mobileMediaBtn = document.querySelector('.mobile-media')
 
 mobileMediaBtn.addEventListener('click',() =>{
@@ -93,3 +104,54 @@ mobileMediaBtn.addEventListener('click',() =>{
   if (window.innerWidth < 1024) {
     document.querySelector('.media-container').classList.add('displayNone');
   }
+
+
+//Link trick delete btn on hidding form
+let tricksDeleteBtn = document.querySelector('.deleteBtn')
+
+tricksDeleteBtn.addEventListener('click',(e) => {
+  e.preventDefault()
+  e.stopPropagation()
+  let tricksFormDelete = document.querySelector('.deleteForm')
+  tricksFormDelete.submit()
+})
+
+
+function createIframe(tricksVideo)
+{
+  let iframe = document.createElement('iframe')
+  let link = tricksVideo.value
+  iframe.setAttribute('src',link)
+  iframe.setAttribute('frameborder',0)
+
+  let container = tricksVideo.parentElement
+  if (container.querySelector('iframe')) {
+    console.log(container.querySelector('iframe'))
+    container.querySelector('iframe').replaceWith(iframe);
+  } else {
+    container.appendChild(iframe);
+  }
+}
+
+//Featured Image Edition
+let editFeaturedImageBtn = document.querySelector('.trick-action .fa-pencil')
+
+let deleteFeaturedImageBtn = document.querySelector('.trick-action .fa-trash')
+
+let featuredImageInput = document.querySelector('.featuredImageInput')
+
+let featuredImageDelete = featuredImageInput.parentElement.querySelector('div')
+
+let featuredImage = document.querySelector('img.featuredImage')
+
+
+console.log(featuredImageInput)
+
+editFeaturedImageBtn.addEventListener('click', (e) => {
+  featuredImageInput.click()
+})
+
+deleteFeaturedImageBtn.addEventListener('click', (e) => {
+  featuredImageDelete.querySelector('input').checked = true;
+  featuredImage.src = '/img/noimage.png'
+})

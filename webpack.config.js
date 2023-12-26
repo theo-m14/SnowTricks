@@ -21,7 +21,7 @@ Encore
      * and one CSS file (e.g. app.css) if your JavaScript imports CSS.
      */
     .addEntry('app', './assets/app.js')
-    .addEntry('imageUpload', './assets/imageUpload')
+    .addEntry('tricksForm', './assets/tricksForm.js')
     .addEntry('ajaxComment','./assets/ajaxComment.js')
     .addEntry('ajaxTricks','./assets/ajaxTricks.js')
 

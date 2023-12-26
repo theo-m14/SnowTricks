@@ -4,7 +4,7 @@
 {% endblock %}
 
 {% block javascript %}
-{{ encore_entry_script_tags('ajaxTricks') }}
+	{{ encore_entry_script_tags('ajaxTricks') }}
 {% endblock %}
 
 {% block body %}
@@ -36,9 +36,13 @@
 		<div class="tricks-container" id="tricks">
 			{% for trick in tricks %}
 				<div class="trick">
-					<img src="{{ vich_uploader_asset(trick.tricksImages[0]) }}" alt="">
+					{% if trick.featuredImageName %}
+						<img src="{{ vich_uploader_asset(trick,'featuredImageFile') }}" alt="">
+					{% else %}
+						<img src="{{ asset('img/noimage.png') }}" alt="">
+					{% endif %}
 					<div>
-						<a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">{{trick.name}}</a>
+						<a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">{{trick.name|slice(0,20)}}</a>
 						{% if app.user == trick.user %}
 							<a href="{{path('app_edit_tricks', {'id' : trick.id})}}">
 								<i class="fa-solid fa-pencil"></i>
@@ -54,11 +58,14 @@
 				</div>
 			{% endfor %}
 			<div class="pagination btn">
-			{% if (next - 1) * tricks_per_page < tricks|length and tricks|length > 0 %}
-				<a href="{{ path('app_tricks_json', { page: next }) }}">Suivant</a>
-			{% endif %}
+				{% if (next - 1) * tricks_per_page < tricks|length and tricks|length > 0 %}
+					<a href="{{ path('app_tricks_json', { page: next }) }}">Suivant</a>
+				{% endif %}
+			</div>
+		<div class="chevron-up">
+			<a href="#tricks"><i class="fa-solid fa-chevron-up"></i></a>
 		</div>
 		</div>
-		
+
 	</div>
 {% endblock %}

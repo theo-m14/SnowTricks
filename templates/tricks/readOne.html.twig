@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}trick.name
+{% block title %}{{trick.name}}
 {% endblock %}
 {% block javascript %}
 	{{ encore_entry_script_tags('ajaxComment') }}
@@ -26,7 +26,11 @@
 					</form>
 				{% endif %}
 			</div>
-			<img src='{{ vich_uploader_asset(trick.tricksImages[0]) }}'>
+			{% if trick.featuredImageName %}
+				<img src="{{ vich_uploader_asset(trick,'featuredImageFile') }}" alt="">
+				{% else %}
+					<img src="{{ asset('img/noimage.png') }}" alt="">
+				{% endif %}
 			<h1>{{trick.name}}</h1>
 			<a href="" class="mobile-media btn">Voir Médias</a>
 			<div class="media-container">
@@ -51,16 +55,18 @@
 					<div class="comment" comment-id="{{comment.id}}">
 						<img src='../img/avatar/{{ comment.user.picture }}.png'>
 						<div class="comment-details">
-							<p class="commentContent">{{comment.content}}</p>
-							<p class="commentError"></p>
+							<div class="commentContent">
 							{% if app.user == comment.user %}
 								<div class="comment-action">
-									<a class="editBtn" href="#">
+									<a class="editBtn">
 										<i class="fa-solid fa-pencil"></i>
 									</a>
 									{% include "comment/_delete_form.html.twig" %}
 								</div>
 							{% endif %}
+							<p>{{comment.content}}</p>
+							</div>
+							<p class="commentError"></p>
 						</div>
 					</div>
 				{% endfor %}
