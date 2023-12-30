@@ -9,8 +9,11 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TricksRepository;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: TricksRepository::class)]
+#[Vich\Uploadable]
 class Tricks
 {
     #[ORM\Id]
@@ -20,6 +23,12 @@ class Tricks
 
     #[ORM\Column(length: 255)]
     private ?string $name = null;
+
+    #[ORM\Column(length: 255,nullable:true)]
+    private ?string $featuredImageName = null;
+
+    #[Vich\UploadableField(mapping: 'featuredImage', fileNameProperty: 'featuredImageName')]
+    private ?File $featuredImageFile = null;
 
     #[ORM\Column(type: Types::TEXT)]
     private ?string $description = null;
@@ -40,6 +49,9 @@ class Tricks
 
     #[ORM\OneToMany(mappedBy: 'trick', targetEntity: Comment::class)]
     private Collection $comments;
+
+    #[ORM\Column]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     public function __construct()
     {
@@ -190,4 +202,55 @@ class Tricks
 
         return $this;
     }
+
+
+    /**
+     * If manually uploading a file (i.e. not using Symfony Form) ensure an instance
+     * of 'UploadedFile' is injected into this setter to trigger the update. If this
+     * bundle's configuration parameter 'inject_on_load' is set to 'true' this setter
+     * must be able to accept an instance of 'File' as the bundle will inject one here
+     * during Doctrine hydration.
+     *
+     * @param File|\Symfony\Component\HttpFoundation\File\UploadedFile|null $file
+     */
+    public function setFeaturedImageFile(?File $featuredImageFile = null): void
+    {
+        $this->featuredImageFile = $featuredImageFile;
+
+        if (null !== $featuredImageFile) {
+            // It is required that at least one field changes if you are using doctrine
+            // otherwise the event listeners won't be called and the file is lost
+            $this->updatedAt = new \DateTimeImmutable();
+        }
+    }
+
+    public function getFeaturedImageFile(): ?File
+    {
+        return $this->featuredImageFile;
+    }
+
+    public function getFeaturedImageName(): ?string
+    {
+        return $this->featuredImageName;
+    }
+
+    public function setFeaturedImageName(?string $featuredImageName): static
+    {
+        $this->featuredImageName = $featuredImageName;
+
+        return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    
 }

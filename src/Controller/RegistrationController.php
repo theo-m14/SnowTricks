@@ -27,7 +27,7 @@ class RegistrationController extends AbstractController
         $this->emailVerifier = $emailVerifier;
     }
 
-    #[Route('/register', name: 'app_register')]
+    #[Route('/register', name: 'app_register', methods:['GET','POST'])]
     public function register(Request $request, UserPasswordHasherInterface $userPasswordHasher, UserAuthenticatorInterface $userAuthenticator, AppAuthenticator $authenticator, EntityManagerInterface $entityManager): Response
     {
         $user = new User();
@@ -54,13 +54,6 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
-
-            // return $userAuthenticator->authenticateUser(
-            //     $user,
-            //     $authenticator,
-            //     $request
-            // );
 
             return $this->redirectToRoute('app_home');
         }
@@ -70,7 +63,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/vérification', name: "app_resend_mail")]
+    #[Route('/vérification', name: "app_resend_mail", methods:['GET'])]
     public function resendMail() : Response
     {
         $this->emailVerifier->sendEmailConfirmation('app_verify_email', $this->getUser(),
@@ -84,7 +77,7 @@ class RegistrationController extends AbstractController
         return $this->redirectToRoute('app_home');
     }
 
-    #[Route('/verify/email', name: 'app_verify_email')]
+    #[Route('/verify/email', name: 'app_verify_email', methods:['GET','POST'])]
     public function verifyUserEmail(Request $request, TranslatorInterface $translator): Response
     {
         $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');

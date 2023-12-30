@@ -1,0 +1,31 @@
+{% for trick in tricks %}
+	<div class="trick">
+		{% if trick.featuredImageName %}
+						<img src="{{ vich_uploader_asset(trick,'featuredImageFile') }}" alt="">
+					{% else %}
+						<img src="{{ asset('img/noimage.png') }}" alt="">
+					{% endif %}
+		<div>
+			<a href="{{path('app_tricks_readOne', {'id' : trick.id})}}">{{trick.name|slice(0,20)}}</a>
+			{% if app.user == trick.user %}
+				<a href="{{path('app_edit_tricks', {'id' : trick.id})}}">
+					<i class="fa-solid fa-pencil"></i>
+				</a>
+				<form class='deleteBtn' action="{{path('app_tricks_delete', {'id' : trick.id})}}" method='post' onsubmit='return (confirm("Voulez vous vraiment supprimer le serveur {{trick.name}} ?"))'>
+					<input type="hidden" name="token" value="{{ csrf_token('delete-tricks') }}">
+					<button type="submit">
+						<i class="fa-solid fa-trash"></i>
+					</button>
+				</form>
+			{% endif %}
+		</div>
+	</div>
+{% endfor %}
+<div class="pagination btn">
+	{% if (next - 1) * tricks_per_page < tricks|length and tricks|length > 0 %}
+		<a href="{{ path('app_tricks_json', { page: next }) }}">Charger plus</a>
+	{% endif %}
+</div>
+<div class="chevron-up">
+			<a href="#tricks"><i class="fa-solid fa-chevron-up"></i></a>
+</div>

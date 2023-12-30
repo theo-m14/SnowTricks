@@ -8,7 +8,9 @@ use App\Form\TricksImageType;
 use App\Form\TricksVideoType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\Form\AbstractType;
+use Vich\UploaderBundle\Form\Type\VichFileType;
 use Symfony\Component\Form\FormBuilderInterface;
+use Vich\UploaderBundle\Form\Type\VichImageType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
@@ -38,6 +40,8 @@ class TricksFormType extends AbstractType
                 new Length([
                     'min' => 4,
                     'minMessage' => 'Le nom du tricks doit faire au moins {{ limit }} caractères',
+                    'max' => 15,
+                    'maxMessage' => 'Le nom du tricks doit faire moins de {{ limit }} caratères'
                 ]),
             ],])
             ->add('description',TextareaType::class,['constraints' => [
@@ -49,6 +53,12 @@ class TricksFormType extends AbstractType
                     'minMessage' => 'La description du tricks doit faire au moins {{ limit }} caractères',
                 ]),
             ],])
+            ->add('featuredImageFile', VichImageType::class,[
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => false,
+                'image_uri' => false,
+            ])
             ->add('tricksGroup', EntityType::class, [
                 'class' => TricksGroup::class,
                 'choice_label' => 'name',
@@ -69,7 +79,8 @@ class TricksFormType extends AbstractType
                 'allow_delete' => true,
                 'by_reference' => false,
                 'entry_options' => ['label' => false],
-                'label' => false
+                'label' => false,
+                "required" => false
             ])
         ;
     }

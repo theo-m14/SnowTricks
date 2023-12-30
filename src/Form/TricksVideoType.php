@@ -18,9 +18,11 @@ class TricksVideoType extends AbstractType
         $builder
             ->add('link', TextType::class, [
                 'label' => false,
+                'required' => false,
+                'empty_data' => '',
                 'constraints' => [
                     new NotBlank([
-                        'message' => "Merci de renseigner une url pour les vidéos",
+                        'message' => "Merci de renseigner une url pour la vidéo",
                     ]),
                     new Url([
                         'message' => "L'url doit être valide et commencer par 'https://' ou 'www'",

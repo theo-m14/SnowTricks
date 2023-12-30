@@ -1,14 +1,16 @@
-let editCommentBtn = document.querySelectorAll('.editBtn')
+function addEventonEdit(){
+    let editCommentBtn = document.querySelectorAll('.editBtn')
 
 
-editCommentBtn.forEach((btn) => {
+    editCommentBtn.forEach((btn) => {
     btn.addEventListener('click',(e) => editComment(e) )
 })
+}
 
 function editComment(e)
 {
     let commentContainer = e.target.parentElement.parentElement.parentElement
-    let commentContent = commentContainer.querySelector('.commentContent')
+    let commentContent = commentContainer.querySelector('.commentContent p')
     let textarea = document.createElement('textarea');
     textarea.classList.add('commentContent');
     textarea.value = commentContent.textContent;
@@ -22,11 +24,9 @@ function editComment(e)
     submitBtn.addEventListener('click', (e) => {
         e.preventDefault();
 
-        let commentContainer = e.target.parentElement.parentElement
-        let commentContent = commentContainer.querySelector('.commentContent')
+        let commentContainer = e.target.parentElement.parentElement.parentElement
+        let commentContent = commentContainer.querySelector('.commentContent textarea')
 
-        console.log(commentContainer)
-        console.log(commentContent)
         let formData = new FormData();
         formData.append('content', commentContent.value);
         formData.append('comment-id', commentContainer.getAttribute('comment-id'));
@@ -66,4 +66,29 @@ function editComment(e)
             commentContainer.querySelector('.commentError').textContent = error.message
         });
     });
+}
+
+window.onload = () => {
+    addEventonEdit()
+    addEventOnLoadMore()
+}
+
+function addEventOnLoadMore(){
+    document.querySelector('.pagination').addEventListener('click',(event) => {
+        event.preventDefault()
+        event.stopPropagation()
+        let link = document.querySelector('.pagination a')
+    
+        let nextPageUrl = link.getAttribute('href')
+    
+        fetch(nextPageUrl).then((response) => {
+            return response.json()
+        }).then(data => {
+            let tricksContainer = document.querySelector('.comments-container')
+            tricksContainer.removeChild(document.querySelector('.pagination'))
+            tricksContainer.innerHTML += data.content
+            addEventOnLoadMore()
+            addEventonEdit()
+        })
+    })
 }

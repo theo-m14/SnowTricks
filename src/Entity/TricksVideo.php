@@ -15,7 +15,7 @@ class TricksVideo
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(type: Types::TEXT)]
+    #[ORM\Column(type: Types::TEXT,nullable:true)]
     private ?string $link = null;
 
     #[ORM\ManyToOne(inversedBy: 'tricksVideos')]

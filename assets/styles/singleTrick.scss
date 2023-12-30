@@ -1,8 +1,8 @@
-div.home-background.background-single-trick{
-  margin-bottom: 50vw;
-}
+
 
 .single-trick{
+  padding: 3em;
+  padding-top: 0;
   .trick-action{
     display: flex;
     position: absolute;
@@ -45,9 +45,8 @@ div.home-background.background-single-trick{
     width: 60%;
     position: relative;
     left: 50%;
-    top: 50%;
-    transform: translate(-50%, -20%);
-    background-color: rgb(216, 216, 216);
+    transform: translate(-50%);
+    background-color: rgb(239 239 239);
     .mobile-media{
       display: none;
     }
@@ -61,8 +60,8 @@ div.home-background.background-single-trick{
     position: absolute;
     text-align: center;
     left: 50%;
-    top: 30%;
-    transform: translate(-50%, -70%);
+    top: 15%;
+    transform: translate(-50%);
   }
 
   .media-container{
@@ -123,11 +122,17 @@ div.home-background.background-single-trick{
           width: 70%;
           display: flex;
           flex-direction: column;
+          margin: 1em auto;
+          padding-top: 0;
           >button{
             width: 60%;
             padding: 5px 10px;
             margin: auto;
             margin-top: 1em;
+          }
+          .commentError{
+            margin: 0;
+            color: red;
           }
         }
         display: flex;
@@ -137,13 +142,27 @@ div.home-background.background-single-trick{
           background-color: $background;
           padding: 5% 20%;
           border-radius: 7px;
-          margin-top: 0;
+          margin: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          button:not(.comment-action button){
+            margin-top: 1em;
+          }
+          p{
+            word-wrap: break-word;
+            width: 90%;
+            margin: auto;
+            padding: 0;
+          }
         }
         .comment-action{
           display: flex;
-          position: absolute;
           gap: 1em;
           padding: 10px;
+          a:hover{
+            cursor: pointer;
+          }
           i{
             font-size: 18px;
           }

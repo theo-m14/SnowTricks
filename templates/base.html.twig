@@ -25,6 +25,9 @@
 			{% endfor %}
 			{% block body %}{% endblock %}
 		</main>
-		{% include "footer.html.twig" %}
+		{% if singleTrickPage is not defined %}
+			{% include "footer.html.twig" %}
+		{% endif %}
+		
 	</body>
 </html>
