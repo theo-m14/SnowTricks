@@ -23,7 +23,7 @@
 		{% if tricks.featuredImageName %}
 			<img class="featuredImage" src="{{ vich_uploader_asset(tricks,'featuredImageFile') }}" alt="">
 		{% else %}
-			<img src="{{ asset('img/noimage.png') }}" alt="">
+			<img src="{{ asset('img/noimage.png') }}" class='featuredImage' alt="">
 		{% endif %}
 		{{ form_widget(form.featuredImageFile, {attr:{ class : 'featuredImageInput'}})}}
 		<div class="trickName">

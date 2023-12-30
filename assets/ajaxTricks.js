@@ -7,6 +7,12 @@ function addEventOnLoadMore(){
         let nextPageUrl = link.getAttribute('href')
 
         let tricksContainer = document.querySelector('.tricks-container')
+
+        let chevronUp = document.querySelector('.chevron-up')
+
+        if(chevronUp){
+            chevronUp.parentNode.removeChild(chevronUp);
+        }
     
         fetch(nextPageUrl).then((response) => {
             tricksContainer.removeChild(document.querySelector('.pagination'))

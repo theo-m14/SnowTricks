@@ -145,13 +145,21 @@ let featuredImageDelete = featuredImageInput.parentElement.querySelector('div')
 let featuredImage = document.querySelector('img.featuredImage')
 
 
-console.log(featuredImageInput)
-
 editFeaturedImageBtn.addEventListener('click', (e) => {
   featuredImageInput.click()
 })
 
 deleteFeaturedImageBtn.addEventListener('click', (e) => {
-  featuredImageDelete.querySelector('input').checked = true;
+  if(featuredImageDelete){
+    featuredImageDelete.querySelector('input').checked = true;
+  }
+  featuredImageInput.value = null
   featuredImage.src = '/img/noimage.png'
+})
+
+featuredImageInput.addEventListener('change', (e) => {
+  let file = featuredImageInput.files[0]
+  if(file){
+    featuredImage.src = URL.createObjectURL(file)
+  }
 })

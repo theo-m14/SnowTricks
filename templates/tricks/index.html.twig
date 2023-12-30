@@ -25,10 +25,7 @@
 			<i class="fa-solid fa-circle-arrow-down"></i>
 		</a>
 	</div>
-	{% if app.user and not app.user.verified %}
-		<a href={{path('app_resend_mail')}}>Renvoyer mail</a>
-	{% endif %}
-	{% if app.user %}
+	{% if app.user and app.user.verified %}
 		<a href={{path('app_add_tricks')}} class="addTrick">Ajouter un tricks</a>
 	{% endif %}
 
@@ -62,9 +59,6 @@
 					<a href="{{ path('app_tricks_json', { page: next }) }}">Suivant</a>
 				{% endif %}
 			</div>
-		<div class="chevron-up">
-			<a href="#tricks"><i class="fa-solid fa-chevron-up"></i></a>
-		</div>
 		</div>
 
 	</div>

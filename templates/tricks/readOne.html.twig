@@ -18,7 +18,7 @@
 					<a href="{{path('app_edit_tricks', {'id' : trick.id})}}">
 						<i class="fa-solid fa-pencil"></i>
 					</a>
-					<form class='deleteBtn' action="{{path('app_tricks_delete', {'id' : trick.id})}}" method='post' onsubmit='return (confirm("Voulez vous vraiment supprimer le serveur {{trick.name}} ?"))'>
+					<form class='deleteBtn' action="{{path('app_tricks_delete', {'id' : trick.id})}}" method='post' onsubmit='return (confirm("Voulez vous vraiment supprimer le tricksw {{trick.name}} ?"))'>
 						<input type="hidden" name="token" value="{{ csrf_token('delete-tricks') }}">
 						<button type="submit">
 							<i class="fa-solid fa-trash"></i>
