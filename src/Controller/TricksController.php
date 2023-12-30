@@ -21,7 +21,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 
 class TricksController extends AbstractController
 {
-    #[Route('/', name: 'app_home')]
+    #[Route('/', name: 'app_home', methods:['GET'])]
     public function index(TricksRepository $tricksRepository,Request $request): Response
     {   
         /** @var \App\Entity\User | null $user */
@@ -42,7 +42,7 @@ class TricksController extends AbstractController
         ]);
     }
 
-    #[Route('/tricks/{id}', name: 'app_tricks_readOne')]
+    #[Route('/tricks/{id}', name: 'app_tricks_readOne', methods:['GET'])]
     public function getOne(Tricks $trick, int $id,Request $request,EntityManagerInterface $entityManager,CommentRepository $commentRepository): Response
     {
         $comment = new Comment();
@@ -79,10 +79,12 @@ class TricksController extends AbstractController
         ]);
     }
 
-    #[Route('/ajoutTricks', name: 'app_add_tricks')]
+    #[Route('/ajoutTricks', name: 'app_add_tricks', methods:['GET','POST'])]
     public function add(Request $request, EntityManagerInterface $entityManager): Response
     {
-        if (!$this->getUser() || !$this->getUser()->isVerified()) {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user || !$user->isVerified()) {
             $this->addFlash('error', 'Vous devez posséder un compte et être vérifié pour cela');
             return $this->redirectToRoute('app_home');
         }
@@ -112,10 +114,12 @@ class TricksController extends AbstractController
         ]);
     }
 
-    #[Route('/editTricks/{id}', name: 'app_edit_tricks')]
+    #[Route('/editTricks/{id}', name: 'app_edit_tricks', methods:['POST','PUT','GET'])]
     public function edit(Tricks $tricks, Request $request, EntityManagerInterface $entityManager,TricksImageRepository $tricksImageRepository): Response
     {
-        if (!$this->getUser() || !$this->getUser()->isVerified()) {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user || !$user->isVerified()) {
             $this->addFlash('error', 'Vous devez posséder un compte et être vérifié pour cela');
             return $this->redirectToRoute('app_home');
         }
@@ -150,7 +154,7 @@ class TricksController extends AbstractController
         ]);
     }
 
-    #[Route('/deleteTricks/{id}', name : "app_tricks_delete")]
+    #[Route('/deleteTricks/{id}', name : "app_tricks_delete", methods:['GET'])]
     public function delete(Tricks $tricks,Request $request,EntityManagerInterface $entityManager) : Response
     {
         if ($tricks->getUser() !== $this->getUser()) {
@@ -171,7 +175,7 @@ class TricksController extends AbstractController
         return $this->redirectToRoute('app_home');
     }
     
-    #[Route('/ajaxTricks', name: 'app_tricks_json')]
+    #[Route('/ajaxTricks', name: 'app_tricks_json', methods:['GET'])]
     public function getTricksJson(TricksRepository $tricksRepository,Request $request) : JsonResponse
     {   
         $page = max(1, $request->query->getInt('page', 1));

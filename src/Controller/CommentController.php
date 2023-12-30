@@ -66,7 +66,7 @@ class CommentController extends AbstractController
         return new JsonResponse([['success' => 'Commentaire modifié']]);
     }
 
-    #[Route('/{id}', name: 'app_comment_delete', methods: ['DELETE'])]
+    #[Route('/{id}', name: 'app_comment_delete', methods: ['GET'])]
     public function delete(Request $request, Comment $comment, EntityManagerInterface $entityManager): Response
     {
         $tricks = $comment->getTrick();
@@ -81,7 +81,7 @@ class CommentController extends AbstractController
         return $this->redirectToRoute('app_tricks_readOne', ['id' => $tricks->getId()], Response::HTTP_SEE_OTHER);
     }
 
-    #[Route('/ajaxComments/{id}', name: 'app_comments_json')]
+    #[Route('/ajaxComments/{id}', name: 'app_comments_json', methods:['GET'])]
     public function getTricksJson(Tricks $trick,CommentRepository $commentRepository,Request $request) : JsonResponse
     {   
         $page = max(1, $request->query->getInt('page', 1));

@@ -70,7 +70,7 @@ class RegistrationController extends AbstractController
         ]);
     }
 
-    #[Route('/vérification', name: "app_resend_mail")]
+    #[Route('/vérification', name: "app_resend_mail", methods:['GET'])]
     public function resendMail() : Response
     {
         $this->emailVerifier->sendEmailConfirmation('app_verify_email', $this->getUser(),
