@@ -10,8 +10,14 @@ To get started with SnowTricks, follow these simple steps:
 
 ### Prerequisites
 
-- Make sure you have PHP installed on your machine.
 - Composer is required for managing the project's dependencies.
+
+### Version used on devlopment
+
+- Php 8.1
+- Yarn 1.22.19
+- Node 18.17.1
+- MySQL 8.0.31
 
 ### Installation Steps
 
@@ -55,6 +61,12 @@ To get started with SnowTricks, follow these simple steps:
     php bin/console server:run
     ```
 
-8. **Access the application in your browser:**
+8. **Compile assets
+    
+    ```bash
+    yarn watch
+    ```
+
+9. **Access the application in your browser:**
 
     Open [http://127.0.0.1:8000](http://127.0.0.1:8000) in your preferred browser.
