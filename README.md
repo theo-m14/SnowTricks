@@ -12,7 +12,7 @@ To get started with SnowTricks, follow these simple steps:
 
 - Composer is required for managing the project's dependencies.
 
-### Version used on devlopment
+## Version used on devlopment
 
 - Php 8.1
 - Yarn 1.22.19
@@ -61,7 +61,7 @@ To get started with SnowTricks, follow these simple steps:
     php bin/console server:run
     ```
 
-8. **Compile assets
+8. **Compile assets**
     
     ```bash
     yarn watch
