@@ -109,12 +109,15 @@ mobileMediaBtn.addEventListener('click',() =>{
 //Link trick delete btn on hidding form
 let tricksDeleteBtn = document.querySelector('.deleteBtn')
 
-tricksDeleteBtn.addEventListener('click',(e) => {
-  e.preventDefault()
-  e.stopPropagation()
-  let tricksFormDelete = document.querySelector('.deleteForm')
-  tricksFormDelete.submit()
-})
+if(tricksDeleteBtn){
+  tricksDeleteBtn.addEventListener('click',(e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    let tricksFormDelete = document.querySelector('.deleteForm')
+    tricksFormDelete.submit()
+  })  
+}
+
 
 
 function createIframe(tricksVideo)

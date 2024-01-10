@@ -74,12 +74,12 @@
 				</ul>
 				<ul class="videoErrors">
 					{% for image in form.tricksImages %}
-						{% if form_errors(image.link) %}
+						{% if form_errors(image.file) %}
 							<li>
 								Image
 								{{loop.index}}
 								:
-								{{form_errors(image.link)}}
+								{{form_errors(image.file)}}
 							</li>
 						{% endif %}
 					{% endfor %}

@@ -42,7 +42,7 @@ class TricksController extends AbstractController
         ]);
     }
 
-    #[Route('/tricks/{id}', name: 'app_tricks_readOne', methods:['GET'])]
+    #[Route('/tricks/{id}', name: 'app_tricks_readOne', methods:['GET','POST'])]
     public function getOne(Tricks $trick, int $id,Request $request,EntityManagerInterface $entityManager,CommentRepository $commentRepository): Response
     {
         $comment = new Comment();
@@ -154,7 +154,7 @@ class TricksController extends AbstractController
         ]);
     }
 
-    #[Route('/deleteTricks/{id}', name : "app_tricks_delete", methods:['GET'])]
+    #[Route('/deleteTricks/{id}', name : "app_tricks_delete", methods:['GET','POST'])]
     public function delete(Tricks $tricks,Request $request,EntityManagerInterface $entityManager) : Response
     {
         if ($tricks->getUser() !== $this->getUser()) {
@@ -165,6 +165,10 @@ class TricksController extends AbstractController
         $submittedToken = $request->request->get('token');
 
         if ($this->isCsrfTokenValid('delete-tricks', $submittedToken)) {
+
+            foreach ($tricks->getComments() as $comment) {
+                $entityManager->remove($comment);
+            }
             $entityManager->remove($tricks);
             $entityManager->flush();
             $this->addFlash('success','Tricks supprimé');
